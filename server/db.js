@@ -4,8 +4,8 @@ const { createClient } = require('@libsql/client');
 try { require('dotenv').config(); } catch(e) {}
 
 // --- Create Turso client ---
-const dbUrl = process.env.TURSO_DATABASE_URL || 'file:watil.db';
-const dbToken = process.env.TURSO_AUTH_TOKEN;
+const dbUrl = (process.env.TURSO_DATABASE_URL || 'file:watil.db').trim();
+const dbToken = process.env.TURSO_AUTH_TOKEN ? process.env.TURSO_AUTH_TOKEN.trim() : undefined;
 console.log(`[DB] Connecting to: ${dbUrl.substring(0, 30)}... (token: ${dbToken ? 'set' : 'NOT SET'})`);
 
 const clientConfig = { url: dbUrl };
