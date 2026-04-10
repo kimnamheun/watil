@@ -2,81 +2,98 @@
    WATIL - Common JavaScript
    ============================================ */
 
-// --- Header Scroll Effect ---
-const header = document.querySelector('.header');
-if (header) {
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 20);
-  });
-}
+document.addEventListener('DOMContentLoaded', () => {
 
-// --- Mobile Nav Toggle ---
-const navToggle = document.querySelector('.nav-toggle');
-const nav = document.querySelector('.nav');
-if (navToggle && nav) {
-  navToggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('open');
-    navToggle.classList.toggle('active');
-    // Hamburger → X animation
-    const spans = navToggle.querySelectorAll('span');
-    if (isOpen) {
-      spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-      spans[1].style.opacity = '0';
-      spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-    } else {
-      spans[0].style.transform = '';
-      spans[1].style.opacity = '';
-      spans[2].style.transform = '';
-    }
-  });
-
-  // Close nav when clicking a LEAF link (not a dropdown parent)
-  nav.querySelectorAll('.nav__dropdown a, .nav__item > .nav__link').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const parentItem = link.closest('.nav__item');
-      const hasDropdown = parentItem && parentItem.querySelector('.nav__dropdown');
-
-      // If this is a parent link WITH dropdown on mobile → toggle dropdown, don't close nav
-      if (hasDropdown && link.classList.contains('nav__link') && window.innerWidth <= 767) {
-        e.preventDefault();
-        // Close other dropdowns
-        nav.querySelectorAll('.nav__item.open').forEach(other => {
-          if (other !== parentItem) other.classList.remove('open');
-        });
-        parentItem.classList.toggle('open');
-        return;
-      }
-
-      // Otherwise it's a real navigation link → close the mobile nav
-      nav.classList.remove('open');
-      navToggle.classList.remove('active');
-      const spans = navToggle.querySelectorAll('span');
-      spans[0].style.transform = '';
-      spans[1].style.opacity = '';
-      spans[2].style.transform = '';
+  // --- Header Scroll Effect ---
+  const header = document.querySelector('.header');
+  if (header) {
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 20);
     });
-  });
-}
+  }
 
-// --- Scroll Animations ---
+  // --- Mobile Nav ---
+  const navToggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.nav');
+
+  if (navToggle && nav) {
+    function closeNav() {
+      nav.classList.remove('open');
+      navToggle.querySelectorAll('span').forEach(s => s.style.cssText = '');
+    }
+
+    function openNav() {
+      nav.classList.add('open');
+      const spans = navToggle.querySelectorAll('span');
+      spans[0].style.cssText = 'transform:rotate(45deg) translate(5px,5px)';
+      spans[1].style.cssText = 'opacity:0';
+      spans[2].style.cssText = 'transform:rotate(-45deg) translate(5px,-5px)';
+    }
+
+    // Toggle button
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (nav.classList.contains('open')) closeNav();
+      else openNav();
+    });
+
+    // Handle each nav item
+    nav.querySelectorAll('.nav__item').forEach(item => {
+      const link = item.querySelector('.nav__link');
+      const dropdown = item.querySelector('.nav__dropdown');
+
+      if (link && dropdown) {
+        // Has dropdown → toggle on mobile
+        link.addEventListener('click', (e) => {
+          if (window.innerWidth <= 767) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Close others
+            nav.querySelectorAll('.nav__item').forEach(other => {
+              if (other !== item) other.classList.remove('open');
+            });
+            item.classList.toggle('open');
+          }
+        });
+
+        // Dropdown child links → navigate & close
+        dropdown.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            if (window.innerWidth <= 767) closeNav();
+          });
+        });
+      } else if (link) {
+        // No dropdown → just close nav on mobile click
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 767) closeNav();
+        });
+      }
+    });
+  }
+
+  // --- Scroll Animations ---
+  initAnimations();
+
+  // --- Active Nav Highlight ---
+  highlightNav();
+});
+
+// --- Scroll Animations (global for re-use) ---
 function initAnimations() {
-  const elements = document.querySelectorAll('[data-animate]');
+  const elements = document.querySelectorAll('[data-animate]:not(.is-visible)');
   if (!elements.length) return;
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('is-visible');
-        }, index * 100);
+        entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.1 });
 
   elements.forEach(el => observer.observe(el));
 }
-document.addEventListener('DOMContentLoaded', initAnimations);
 
 // --- Active Nav Highlight ---
 function highlightNav() {
@@ -86,7 +103,6 @@ function highlightNav() {
     link.classList.toggle('active', href === path);
   });
 }
-highlightNav();
 
 // --- Helper: Format Date ---
 function formatDate(dateStr) {

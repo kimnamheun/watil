@@ -1,4 +1,4 @@
-require('dotenv').config();
+try { require('dotenv').config(); } catch(e) {}
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -10,10 +10,15 @@ const pagesRouter = require('./server/routes/pages');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Wait for DB init before handling requests
-app.use(async (req, res, next) => {
-  await dbReady;
-  next();
+// Wait for DB init before handling API requests
+app.use('/api', async (req, res, next) => {
+  try {
+    await dbReady;
+    next();
+  } catch(err) {
+    console.error('DB init failed:', err);
+    res.status(500).json({ error: 'Database initialization failed' });
+  }
 });
 
 // Middleware
