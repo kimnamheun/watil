@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WATIL Admin</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-wrap">
+    <div class="login-box">
+      <h1>WAT<span>IL</span></h1>
+      <p>관리자 로그인</p>
+      <form id="loginForm">
+        <input type="text" id="loginUser" placeholder="아이디" value="admin" autocomplete="username">
+        <input type="password" id="loginPass" placeholder="비밀번호" autocomplete="current-password">
+        <button type="submit">로그인</button>
+        <div class="error" id="loginError"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Layout -->
+  <div id="adminLayout" class="admin-layout" style="display:none;">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__logo">WAT<span>IL</span> Admin</div>
+
+      <div class="sidebar__section">페이지 관리</div>
+      <button class="sidebar__link active" data-page="company" onclick="loadPage('company',this)">회사소개</button>
+      <button class="sidebar__link" data-page="business" onclick="loadPage('business',this)">사업영역</button>
+      <button class="sidebar__link" data-page="solution" onclick="loadPage('solution',this)">솔루션</button>
+      <button class="sidebar__link" data-page="product" onclick="loadPage('product',this)">제품소개</button>
+
+      <div class="sidebar__section">콘텐츠 관리</div>
+      <button class="sidebar__link" onclick="loadBoardAdmin(this)">게시판 관리</button>
+      <button class="sidebar__link" onclick="loadInquiryAdmin(this)">문의 관리</button>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+      <div class="admin-header">
+        <h2 id="adminTitle">회사소개</h2>
+        <button class="logout-btn" onclick="logout()">로그아웃</button>
+      </div>
+      <div id="adminContent"></div>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

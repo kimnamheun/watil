@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>도입문의 - WATIL</title>
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+  <header class="header"><div class="header__inner"><a href="/" class="header__logo">WAT<span>IL</span></a><nav class="nav"><div class="nav__item"><a href="/company.html" class="nav__link">회사소개</a></div><div class="nav__item"><a href="#" class="nav__link">사업영역</a><div class="nav__dropdown"><a href="/business.html">사업 개요</a><a href="/solution.html">솔루션</a></div></div><div class="nav__item"><a href="#" class="nav__link">제품</a><div class="nav__dropdown"><a href="/product.html">제품 소개</a></div></div><div class="nav__item"><a href="#" class="nav__link">홍보센터</a><div class="nav__dropdown"><a href="/board.html?category=news">언론보도</a><a href="/board.html?category=notice">공지사항</a><a href="/board.html?category=case">도입사례</a></div></div><div class="nav__item"><a href="/inquiry.html" class="nav__link">도입문의</a></div></nav><button class="nav-toggle" aria-label="메뉴"><span></span><span></span><span></span></button></div></header>
+
+  <section class="page-hero" style="background:linear-gradient(135deg,#1a3151,#0e2052);">
+    <div><h1 class="page-hero__title">도입 문의</h1><p class="page-hero__desc">전문 컨설턴트가 맞춤형 솔루션을 제안합니다.</p></div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:720px;">
+
+      <!-- Success Message (hidden) -->
+      <div id="successMsg" style="display:none;text-align:center;padding:80px 0;">
+        <div style="font-size:3rem;margin-bottom:16px;">&#10004;</div>
+        <h2 style="font-size:1.75rem;font-weight:700;margin-bottom:12px;">문의가 접수되었습니다</h2>
+        <p style="color:var(--color-text-light);margin-bottom:32px;">빠른 시일 내에 담당자가 연락드리겠습니다.</p>
+        <a href="/" class="btn btn--primary">홈으로 돌아가기</a>
+      </div>
+
+      <!-- Form -->
+      <form id="inquiryForm" novalidate>
+        <div class="grid grid--2">
+          <div class="form-group">
+            <label>회사명</label>
+            <input type="text" class="form-control" name="company_name" placeholder="회사명을 입력하세요">
+          </div>
+          <div class="form-group">
+            <label>담당자명 <span class="required">*</span></label>
+            <input type="text" class="form-control" name="contact_name" placeholder="담당자명을 입력하세요" required>
+          </div>
+        </div>
+
+        <div class="grid grid--2">
+          <div class="form-group">
+            <label>이메일</label>
+            <input type="email" class="form-control" name="email" placeholder="example@company.com">
+          </div>
+          <div class="form-group">
+            <label>연락처</label>
+            <input type="tel" class="form-control" name="phone" placeholder="010-0000-0000">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>문의 유형</label>
+          <select class="form-control" name="inquiry_type">
+            <option value="">선택해주세요</option>
+            <option value="product">제품 도입 문의</option>
+            <option value="solution">솔루션 상담</option>
+            <option value="partnership">파트너십 제안</option>
+            <option value="demo">데모 요청</option>
+            <option value="etc">기타</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>제목 <span class="required">*</span></label>
+          <input type="text" class="form-control" name="subject" placeholder="문의 제목을 입력하세요" required>
+        </div>
+
+        <div class="form-group">
+          <label>문의 내용 <span class="required">*</span></label>
+          <textarea class="form-control" name="content" rows="6" placeholder="문의 내용을 자세히 적어주세요." required></textarea>
+        </div>
+
+        <div style="margin-top:16px;margin-bottom:32px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;font-size:.875rem;color:var(--color-text-light);cursor:pointer;">
+            <input type="checkbox" id="agreeCheck" style="margin-top:3px;width:18px;height:18px;accent-color:var(--color-accent);" required>
+            <span>개인정보 수집 및 이용에 동의합니다. 수집된 정보는 문의 응대 목적으로만 사용되며, 목적 달성 후 즉시 파기됩니다.</span>
+          </label>
+        </div>
+
+        <div style="text-align:center;">
+          <button type="submit" class="btn btn--primary btn--lg" id="submitBtn" style="min-width:200px;">문의 접수</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="container"><div class="footer__inner"><div><div class="footer__brand">WAT<span>IL</span></div><p class="footer__desc">서울특별시 강남구 테헤란로 123, WATIL 빌딩 8층<br>TEL: 02-1234-5678 | Email: contact@watil.co.kr</p></div><div><h4 class="footer__heading">Company</h4><div class="footer__links"><a href="/company.html">회사소개</a><a href="/business.html">사업영역</a></div></div><div><h4 class="footer__heading">Product</h4><div class="footer__links"><a href="/product.html">제품 소개</a><a href="/board.html?category=case">도입사례</a></div></div><div><h4 class="footer__heading">Support</h4><div class="footer__links"><a href="/board.html?category=notice">공지사항</a><a href="/inquiry.html">도입문의</a></div></div></div><div class="footer__bottom">&copy; 2026 WATIL. All rights reserved.</div></div></footer>
+
+  <script src="/js/common.js"></script>
+  <script>
+    document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = document.getElementById('submitBtn');
+
+      // Validate
+      if (!form.contact_name.value.trim()) { alert('담당자명을 입력하세요.'); form.contact_name.focus(); return; }
+      if (!form.subject.value.trim()) { alert('제목을 입력하세요.'); form.subject.focus(); return; }
+      if (!form.content.value.trim()) { alert('문의 내용을 입력하세요.'); form.content.focus(); return; }
+      if (!document.getElementById('agreeCheck').checked) { alert('개인정보 수집 및 이용에 동의해주세요.'); return; }
+
+      btn.disabled = true;
+      btn.textContent = '접수 중...';
+
+      try {
+        const data = {
+          company_name: form.company_name.value.trim(),
+          contact_name: form.contact_name.value.trim(),
+          email: form.email.value.trim(),
+          phone: form.phone.value.trim(),
+          inquiry_type: form.inquiry_type.value,
+          subject: form.subject.value.trim(),
+          content: form.content.value.trim()
+        };
+
+        await apiFetch('/api/inquiry', {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
+
+        form.style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      } catch (err) {
+        alert('문의 접수에 실패했습니다. 다시 시도해주세요.');
+        btn.disabled = false;
+        btn.textContent = '문의 접수';
+      }
+    });
+  </script>
+</body>
+</html>

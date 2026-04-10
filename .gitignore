@@ -1,0 +1,7 @@
+node_modules/
+watil.db
+watil.db-wal
+watil.db-shm
+uploads/*
+!uploads/.gitkeep
+.env

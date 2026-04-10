@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사업영역 - WATIL</title>
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header__inner">
+      <a href="/" class="header__logo">WAT<span>IL</span></a>
+      <nav class="nav">
+        <div class="nav__item"><a href="/company.html" class="nav__link">회사소개</a></div>
+        <div class="nav__item"><a href="#" class="nav__link">사업영역</a><div class="nav__dropdown"><a href="/business.html">사업 개요</a><a href="/solution.html">솔루션</a></div></div>
+        <div class="nav__item"><a href="#" class="nav__link">제품</a><div class="nav__dropdown"><a href="/product.html">제품 소개</a></div></div>
+        <div class="nav__item"><a href="#" class="nav__link">홍보센터</a><div class="nav__dropdown"><a href="/board.html?category=news">언론보도</a><a href="/board.html?category=notice">공지사항</a><a href="/board.html?category=case">도입사례</a></div></div>
+        <div class="nav__item"><a href="/inquiry.html" class="nav__link">도입문의</a></div>
+      </nav>
+      <button class="nav-toggle" aria-label="메뉴"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- Dynamic Content -->
+  <div id="pageContent">
+    <div style="text-align:center;padding:200px 0;color:#999;">로딩 중...</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div><div class="footer__brand">WAT<span>IL</span></div><p class="footer__desc">서울특별시 강남구 테헤란로 123, WATIL 빌딩 8층<br>TEL: 02-1234-5678 | Email: contact@watil.co.kr</p></div>
+        <div><h4 class="footer__heading">Company</h4><div class="footer__links"><a href="/company.html">회사소개</a><a href="/business.html">사업영역</a></div></div>
+        <div><h4 class="footer__heading">Product</h4><div class="footer__links"><a href="/product.html">제품 소개</a><a href="/board.html?category=case">도입사례</a></div></div>
+        <div><h4 class="footer__heading">Support</h4><div class="footer__links"><a href="/board.html?category=notice">공지사항</a><a href="/inquiry.html">도입문의</a></div></div>
+      </div>
+      <div class="footer__bottom">&copy; 2026 WATIL. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/page-renderer.js"></script>
+  <script>renderPage('business');</script>
+</body>
+</html>
