@@ -1,13 +1,20 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const db = require('./server/db');
+const { db, dbReady } = require('./server/db');
 const boardRouter = require('./server/routes/board');
 const inquiryRouter = require('./server/routes/inquiry');
 const pagesRouter = require('./server/routes/pages');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+// Wait for DB init before handling requests
+app.use(async (req, res, next) => {
+  await dbReady;
+  next();
+});
 
 // Middleware
 app.use(cors());
@@ -23,12 +30,11 @@ app.use('/api/board', boardRouter);
 app.use('/api/inquiry', inquiryRouter);
 app.use('/api/pages', pagesRouter);
 
-// SPA fallback - serve index.html for all non-API routes
+// SPA fallback
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'Not found' });
   }
-  // Serve the requested HTML file or fallback to index.html
   const htmlPath = path.join(__dirname, 'public', req.path.endsWith('.html') ? req.path : req.path + '.html');
   res.sendFile(htmlPath, (err) => {
     if (err) {
