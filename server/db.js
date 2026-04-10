@@ -1,7 +1,13 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 
-const db = new Database(path.join(__dirname, '..', 'watil.db'));
+// Vercel serverless: use /tmp (writable), local: use project root
+const isVercel = !!process.env.VERCEL;
+const dbPath = isVercel
+  ? path.join('/tmp', 'watil.db')
+  : path.join(__dirname, '..', 'watil.db');
+
+const db = new Database(dbPath);
 
 // WAL mode for better concurrency
 db.pragma('journal_mode = WAL');

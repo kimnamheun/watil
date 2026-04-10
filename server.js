@@ -37,6 +37,12 @@ app.get('*', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`WATIL server running at http://localhost:${PORT}`);
-});
+// Local dev: listen on port
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`WATIL server running at http://localhost:${PORT}`);
+  });
+}
+
+// Vercel serverless export
+module.exports = app;

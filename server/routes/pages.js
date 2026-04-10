@@ -5,8 +5,11 @@ const multer = require('multer');
 const path = require('path');
 
 // File upload (images & videos)
+const uploadDir = process.env.VERCEL ? '/tmp/uploads' : path.join(__dirname, '../../uploads');
+try { require('fs').mkdirSync(uploadDir, { recursive: true }); } catch(e) {}
+
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, path.join(__dirname, '../../uploads')),
+  destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     cb(null, `page-${Date.now()}-${Math.round(Math.random()*1e6)}${ext}`);
