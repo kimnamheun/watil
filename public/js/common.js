@@ -15,29 +15,46 @@ const navToggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.nav');
 if (navToggle && nav) {
   navToggle.addEventListener('click', () => {
-    nav.classList.toggle('open');
+    const isOpen = nav.classList.toggle('open');
     navToggle.classList.toggle('active');
+    // Hamburger → X animation
+    const spans = navToggle.querySelectorAll('span');
+    if (isOpen) {
+      spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+    } else {
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    }
   });
 
-  // Close nav when clicking a link
-  nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
+  // Close nav when clicking a LEAF link (not a dropdown parent)
+  nav.querySelectorAll('.nav__dropdown a, .nav__item > .nav__link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const parentItem = link.closest('.nav__item');
+      const hasDropdown = parentItem && parentItem.querySelector('.nav__dropdown');
+
+      // If this is a parent link WITH dropdown on mobile → toggle dropdown, don't close nav
+      if (hasDropdown && link.classList.contains('nav__link') && window.innerWidth <= 767) {
+        e.preventDefault();
+        // Close other dropdowns
+        nav.querySelectorAll('.nav__item.open').forEach(other => {
+          if (other !== parentItem) other.classList.remove('open');
+        });
+        parentItem.classList.toggle('open');
+        return;
+      }
+
+      // Otherwise it's a real navigation link → close the mobile nav
       nav.classList.remove('open');
       navToggle.classList.remove('active');
+      const spans = navToggle.querySelectorAll('span');
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
     });
-  });
-
-  // Mobile dropdown toggle
-  nav.querySelectorAll('.nav__item').forEach(item => {
-    const dropdown = item.querySelector('.nav__dropdown');
-    if (dropdown) {
-      item.querySelector('.nav__link').addEventListener('click', (e) => {
-        if (window.innerWidth <= 767) {
-          e.preventDefault();
-          item.classList.toggle('open');
-        }
-      });
-    }
   });
 }
 

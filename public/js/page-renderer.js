@@ -4,11 +4,18 @@
    ============================================ */
 
 async function renderPage(slug) {
+  const container = document.getElementById('pageContent');
+  if (!container) return;
+
   try {
     const res = await fetch(`/api/pages/${slug}/sections`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const sections = await res.json();
-    const container = document.getElementById('pageContent');
-    if (!container) return;
+
+    if (!sections.length) {
+      container.innerHTML = '<div style="text-align:center;padding:200px 0;color:#999;">콘텐츠를 준비 중입니다.</div>';
+      return;
+    }
 
     container.innerHTML = sections.map(s => renderSection(s)).join('');
 
@@ -16,6 +23,7 @@ async function renderPage(slug) {
     if (typeof initAnimations === 'function') initAnimations();
   } catch (err) {
     console.error('Page render error:', err);
+    container.innerHTML = '<div style="text-align:center;padding:200px 0;color:#e53e3e;">페이지를 불러올 수 없습니다. 새로고침해주세요.</div>';
   }
 }
 
