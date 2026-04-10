@@ -535,8 +535,10 @@ select.form-control {
     transform: translateX(100%);
     transition: transform .35s ease;
     overflow-y: auto;
+    z-index: 9999;
   }
   .nav.open { transform: translateX(0); }
+  .nav-toggle { z-index: 10000; }
   .nav__item {
     height: auto;
     padding: 0;

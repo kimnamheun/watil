@@ -17,85 +17,74 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
 
   if (navToggle && nav) {
-    function closeNav() {
-      nav.classList.remove('open');
-      navToggle.querySelectorAll('span').forEach(s => s.style.cssText = '');
-    }
-
-    function openNav() {
-      nav.classList.add('open');
-      const spans = navToggle.querySelectorAll('span');
-      spans[0].style.cssText = 'transform:rotate(45deg) translate(5px,5px)';
-      spans[1].style.cssText = 'opacity:0';
-      spans[2].style.cssText = 'transform:rotate(-45deg) translate(5px,-5px)';
-    }
-
-    // Toggle button
-    navToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (nav.classList.contains('open')) closeNav();
-      else openNav();
+    // Hamburger toggle
+    navToggle.addEventListener('click', () => {
+      const opening = !nav.classList.contains('open');
+      nav.classList.toggle('open');
+      // Animate hamburger ↔ X
+      const [s1, s2, s3] = navToggle.querySelectorAll('span');
+      if (opening) {
+        s1.style.transform = 'rotate(45deg) translate(5px,5px)';
+        s2.style.opacity = '0';
+        s3.style.transform = 'rotate(-45deg) translate(5px,-5px)';
+      } else {
+        s1.style.transform = '';
+        s2.style.opacity = '';
+        s3.style.transform = '';
+      }
     });
 
-    // Handle each nav item
-    nav.querySelectorAll('.nav__item').forEach(item => {
-      const link = item.querySelector('.nav__link');
+    // Dropdown parents (사업영역, 제품, 홍보센터) - mobile only
+    document.querySelectorAll('.nav__item').forEach(item => {
+      const link = item.querySelector(':scope > .nav__link');
       const dropdown = item.querySelector('.nav__dropdown');
+      if (!link || !dropdown) return;
 
-      if (link && dropdown) {
-        // Has dropdown → toggle on mobile
-        link.addEventListener('click', (e) => {
-          if (window.innerWidth <= 767) {
-            e.preventDefault();
-            e.stopPropagation();
-            // Close others
-            nav.querySelectorAll('.nav__item').forEach(other => {
-              if (other !== item) other.classList.remove('open');
-            });
-            item.classList.toggle('open');
-          }
-        });
+      link.addEventListener('click', (e) => {
+        if (window.innerWidth > 767) return; // desktop: default hover behavior
+        e.preventDefault();
+        const wasOpen = item.classList.contains('open');
+        // close all
+        document.querySelectorAll('.nav__item.open').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
 
-        // Dropdown child links → navigate & close
-        dropdown.querySelectorAll('a').forEach(a => {
-          a.addEventListener('click', () => {
-            if (window.innerWidth <= 767) closeNav();
-          });
-        });
-      } else if (link) {
-        // No dropdown → just close nav on mobile click
-        link.addEventListener('click', () => {
-          if (window.innerWidth <= 767) closeNav();
-        });
-      }
+    // Any real link click inside nav → close mobile menu
+    nav.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href]');
+      if (!link) return;
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      // This is a real navigation link
+      nav.classList.remove('open');
+      const [s1, s2, s3] = navToggle.querySelectorAll('span');
+      s1.style.transform = '';
+      s2.style.opacity = '';
+      s3.style.transform = '';
     });
   }
 
   // --- Scroll Animations ---
   initAnimations();
-
-  // --- Active Nav Highlight ---
   highlightNav();
 });
 
-// --- Scroll Animations (global for re-use) ---
+// --- Scroll Animations (global) ---
 function initAnimations() {
   const elements = document.querySelectorAll('[data-animate]:not(.is-visible)');
   if (!elements.length) return;
-
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
+    entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
-
   elements.forEach(el => observer.observe(el));
 }
 
-// --- Active Nav Highlight ---
 function highlightNav() {
   const path = window.location.pathname.replace('.html', '').replace(/\/$/, '') || '/';
   document.querySelectorAll('.nav__link').forEach(link => {
@@ -104,23 +93,16 @@ function highlightNav() {
   });
 }
 
-// --- Helper: Format Date ---
 function formatDate(dateStr) {
   const d = new Date(dateStr);
   return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
 }
 
-// --- Helper: API Fetch ---
 async function apiFetch(url, options = {}) {
-  try {
-    const res = await fetch(url, {
-      headers: { 'Content-Type': 'application/json', ...options.headers },
-      ...options
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
-  } catch (err) {
-    console.error('API Error:', err);
-    throw err;
-  }
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json', ...options.headers },
+    ...options
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
 }
