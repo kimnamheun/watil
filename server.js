@@ -2,24 +2,13 @@ try { require('dotenv').config(); } catch(e) {}
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const { db, dbReady } = require('./server/db');
+const { db, dbReady, getInitError } = require('./server/db');
 const boardRouter = require('./server/routes/board');
 const inquiryRouter = require('./server/routes/inquiry');
 const pagesRouter = require('./server/routes/pages');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Wait for DB init before handling API requests
-app.use('/api', async (req, res, next) => {
-  try {
-    await dbReady;
-    next();
-  } catch(err) {
-    console.error('DB init failed:', err);
-    res.status(500).json({ error: 'Database initialization failed' });
-  }
-});
 
 // Middleware
 app.use(cors());
@@ -29,6 +18,36 @@ app.use(express.urlencoded({ extended: true }));
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Debug endpoint
+app.get('/api/health', async (req, res) => {
+  await dbReady;
+  const err = getInitError();
+  res.json({
+    status: err ? 'error' : 'ok',
+    error: err ? err.message : null,
+    env: {
+      TURSO_DATABASE_URL: process.env.TURSO_DATABASE_URL ? 'SET' : 'NOT SET',
+      TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN ? 'SET' : 'NOT SET',
+      VERCEL: process.env.VERCEL || 'NOT SET',
+      NODE_ENV: process.env.NODE_ENV || 'NOT SET'
+    }
+  });
+});
+
+// Wait for DB init before handling API requests
+app.use('/api', async (req, res, next) => {
+  try {
+    await dbReady;
+    const err = getInitError();
+    if (err) {
+      return res.status(500).json({ error: 'DB init failed: ' + err.message });
+    }
+    next();
+  } catch(err) {
+    res.status(500).json({ error: 'DB error: ' + err.message });
+  }
+});
 
 // API Routes
 app.use('/api/board', boardRouter);

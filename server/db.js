@@ -4,10 +4,13 @@ const { createClient } = require('@libsql/client');
 try { require('dotenv').config(); } catch(e) {}
 
 // --- Create Turso client ---
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL || 'file:watil.db',  // fallback to local file
-  authToken: process.env.TURSO_AUTH_TOKEN || undefined
-});
+const dbUrl = process.env.TURSO_DATABASE_URL || 'file:watil.db';
+const dbToken = process.env.TURSO_AUTH_TOKEN;
+console.log(`[DB] Connecting to: ${dbUrl.substring(0, 30)}... (token: ${dbToken ? 'set' : 'NOT SET'})`);
+
+const clientConfig = { url: dbUrl };
+if (dbToken) clientConfig.authToken = dbToken;
+const client = createClient(clientConfig);
 
 // --- DB Wrapper (compatible with better-sqlite3 patterns) ---
 // libSQL doesn't accept undefined - convert to null
@@ -152,9 +155,11 @@ const db = {
   }
 };
 
-// Run init (async)
+// Run init (async) - store error for diagnostics
+let initError = null;
 const dbReady = db.init().catch(err => {
-  console.error('DB init error:', err);
+  console.error('DB init error:', err.message, err.stack);
+  initError = err;
 });
 
-module.exports = { db, dbReady };
+module.exports = { db, dbReady, getInitError: () => initError };
