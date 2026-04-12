@@ -17,55 +17,59 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
 
   if (navToggle && nav) {
-    // Hamburger toggle
-    navToggle.addEventListener('click', () => {
+
+    function toggleNav() {
       const opening = !nav.classList.contains('open');
       nav.classList.toggle('open');
-      // Animate hamburger ↔ X
-      const [s1, s2, s3] = navToggle.querySelectorAll('span');
-      if (opening) {
-        s1.style.transform = 'rotate(45deg) translate(5px,5px)';
-        s2.style.opacity = '0';
-        s3.style.transform = 'rotate(-45deg) translate(5px,-5px)';
-      } else {
-        s1.style.transform = '';
-        s2.style.opacity = '';
-        s3.style.transform = '';
-      }
-    });
+      const spans = navToggle.querySelectorAll('span');
+      spans[0].style.transform = opening ? 'rotate(45deg) translate(5px,5px)' : '';
+      spans[1].style.opacity = opening ? '0' : '';
+      spans[2].style.transform = opening ? 'rotate(-45deg) translate(5px,-5px)' : '';
+    }
 
-    // Dropdown parents (사업영역, 제품, 홍보센터) - mobile only
-    document.querySelectorAll('.nav__item').forEach(item => {
-      const link = item.querySelector(':scope > .nav__link');
-      const dropdown = item.querySelector('.nav__dropdown');
-      if (!link || !dropdown) return;
-
-      link.addEventListener('click', (e) => {
-        if (window.innerWidth > 767) return; // desktop: default hover behavior
-        e.preventDefault();
-        const wasOpen = item.classList.contains('open');
-        // close all
-        document.querySelectorAll('.nav__item.open').forEach(i => i.classList.remove('open'));
-        if (!wasOpen) item.classList.add('open');
-      });
-    });
-
-    // Any real link click inside nav → close mobile menu
-    nav.addEventListener('click', (e) => {
-      const link = e.target.closest('a[href]');
-      if (!link) return;
-      const href = link.getAttribute('href');
-      if (!href || href === '#') return;
-      // This is a real navigation link
+    function closeNav() {
       nav.classList.remove('open');
-      const [s1, s2, s3] = navToggle.querySelectorAll('span');
-      s1.style.transform = '';
-      s2.style.opacity = '';
-      s3.style.transform = '';
+      document.querySelectorAll('.nav__item.open').forEach(i => i.classList.remove('open'));
+      const spans = navToggle.querySelectorAll('span');
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    }
+
+    // Hamburger button
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleNav();
+    });
+
+    // All clicks inside nav
+    nav.addEventListener('click', (e) => {
+      if (window.innerWidth > 767) return;
+
+      const clickedLink = e.target.closest('a');
+      if (!clickedLink) return;
+
+      const navItem = clickedLink.closest('.nav__item');
+      const isParentLink = clickedLink.classList.contains('nav__link');
+      const hasDropdown = navItem && navItem.querySelector('.nav__dropdown');
+
+      // Case 1: Parent link with dropdown → toggle submenu
+      if (isParentLink && hasDropdown) {
+        e.preventDefault();
+        e.stopPropagation();
+        const wasOpen = navItem.classList.contains('open');
+        document.querySelectorAll('.nav__item.open').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) navItem.classList.add('open');
+        return;
+      }
+
+      // Case 2: Any other link (dropdown child or simple nav link) → navigate & close
+      closeNav();
+      // Let the default <a> navigation happen
     });
   }
 
-  // --- Scroll Animations ---
+  // --- Init ---
   initAnimations();
   highlightNav();
 });
