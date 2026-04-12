@@ -564,8 +564,14 @@ select.form-control {
     box-shadow: none;
     opacity: 1;
     visibility: visible;
-    padding: 0 0 0 16px;
+    padding: 0;
     display: none;
+    background: var(--color-bg-light);
+  }
+  .nav__dropdown a {
+    padding: 10px 20px 10px 32px;
+    font-size: .8125rem;
+    border-bottom: 1px solid var(--color-border);
   }
   .nav__item.open .nav__dropdown { display: block; }
   .nav-toggle { display: flex; }
