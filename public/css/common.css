@@ -569,9 +569,12 @@ select.form-control {
     background: var(--color-bg-light);
   }
   .nav__dropdown a {
-    padding: 10px 20px 10px 32px;
+    display: block;
+    padding: 12px 20px 12px 32px;
     font-size: .8125rem;
+    color: var(--color-text);
     border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-light);
   }
   .nav__item.open .nav__dropdown { display: block; }
   .nav-toggle { display: flex; }
