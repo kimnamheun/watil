@@ -544,6 +544,14 @@ select.form-control {
     border-radius: 0 0 0 12px;
   }
   .nav.open { transform: translateX(0); }
+  /* 메뉴 열렸을 때 배경 오버레이 */
+  .nav.open::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,.3);
+    z-index: -1;
+  }
   .nav-toggle { z-index: 10000; }
   .nav__item {
     height: auto;
@@ -572,9 +580,13 @@ select.form-control {
     display: block;
     padding: 12px 20px 12px 32px;
     font-size: .8125rem;
-    color: var(--color-text);
+    color: var(--color-text) !important;
     border-bottom: 1px solid var(--color-border);
     background: var(--color-bg-light);
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    transition: none !important;
   }
   .nav__item.open .nav__dropdown { display: block; }
   .nav-toggle { display: flex; }

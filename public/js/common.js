@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
       spans[0].style.transform = opening ? 'rotate(45deg) translate(5px,5px)' : '';
       spans[1].style.opacity = opening ? '0' : '';
       spans[2].style.transform = opening ? 'rotate(-45deg) translate(5px,-5px)' : '';
+      // 배경 스크롤 방지
+      document.body.style.overflow = opening ? 'hidden' : '';
     }
 
     function closeNav() {
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       spans[0].style.transform = '';
       spans[1].style.opacity = '';
       spans[2].style.transform = '';
+      document.body.style.overflow = '';
     }
 
     // Hamburger button
