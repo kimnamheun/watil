@@ -252,7 +252,9 @@
   .hero__title { font-size: 2rem; }
   .hero__desc { font-size: 1rem; }
   .services__grid { grid-template-columns: 1fr; }
+  .service-card { padding: 28px 20px; }
   .stats { grid-template-columns: 1fr 1fr; gap: 24px; }
   .stat__number { font-size: 2.25rem; }
   .cta__title { font-size: 1.75rem; }
+  .feature-split__image { aspect-ratio: 16/9; font-size: 3rem; }
 }

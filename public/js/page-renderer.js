@@ -130,7 +130,7 @@ function renderCardGrid(s) {
       </div>`).join('')}</div>`;
   } else {
     // Service cards
-    cardsHtml = `<div class="services__grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;">
+    cardsHtml = `<div class="services__grid">
       ${items.map(item => `
       <div class="service-card" data-animate>
         <div class="service-card__icon">${item.icon || ''}</div>
