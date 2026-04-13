@@ -567,28 +567,30 @@ select.form-control {
     border-bottom: 1px solid var(--color-border);
   }
   .nav__dropdown {
-    position: static;
-    transform: none;
-    box-shadow: none;
-    opacity: 1;
-    visibility: visible;
+    position: static !important;
+    transform: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: none !important;
     padding: 0;
     display: none;
-    background: var(--color-bg-light);
+    background: #fff;
+    min-width: 0;
   }
   .nav__dropdown a {
-    display: block;
-    padding: 12px 20px 12px 32px;
-    font-size: .8125rem;
-    color: var(--color-text) !important;
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-bg-light);
+    display: block !important;
+    padding: 12px 20px 12px 32px !important;
+    font-size: .8125rem !important;
+    color: #212121 !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    background: #fff !important;
     opacity: 1 !important;
     visibility: visible !important;
     transform: none !important;
     transition: none !important;
   }
-  .nav__item.open .nav__dropdown { display: block; }
+  .nav__item.open .nav__dropdown { display: block !important; }
   .nav-toggle { display: flex; }
 
   .grid--2, .grid--3, .grid--4 { grid-template-columns: 1fr; }
